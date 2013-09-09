@@ -16,10 +16,11 @@ sudo apt-get install libx11-dev libcairo2-dev
 
 Usage
 =====
+```
 make
 ./font-editor < nchars
 (press 'q' to next character)
-
+```
 
 Licensing
 =========
