@@ -42,7 +42,6 @@ static int init (int argc, char **argv)
 	XTextProperty wm_name, icon_name;
 	XSizeHints sizeHints;
 	XWMHints wmHints;
-	XClassHint classHints;
 	Atom wm_delete_window;
 
 	dpy = XOpenDisplay (0);
@@ -72,8 +71,6 @@ static int init (int argc, char **argv)
 	sizeHints.flags = 0;
 	wmHints.flags = InputHint;
 	wmHints.input = True;
-	classHints.res_name = argv[0];
-	classHints.res_class = argv[0];
 	XSetWMProperties (dpy, win,
 			&wm_name, &icon_name,
 			argv, argc,
@@ -113,15 +110,6 @@ static void free_cmd (cmd_t *cmd)
 		free_cmd (cmd->next);
 		free (cmd);
 	}
-}
-
-static cmd_t **before (cmd_t **head, cmd_t *cmd)
-{
-	cmd_t **prev;
-
-	for (prev = head; *prev != cmd; prev = &(*prev)->next)
-		;
-	return prev;
 }
 
 static cmd_t *insert_cmd (cmd_t **prev)
@@ -261,16 +249,13 @@ static void draw_char (char_t *c)
 	XClearArea (dpy, win, 0, 0, 0, 0, False);
 
 	for (cmd = c->cmd; cmd; cmd = cmd->next) {
-		double	alpha;
-		double	tx, ty;
+		double alpha;
 
 		if (cmd == c->first || cmd == c->last)
 			alpha = 1;
 		else
 			alpha = 0.5;
 
-		tx = cmd->pt[0].x;
-		ty = cmd->pt[0].y;
 		switch (cmd->op) {
 		case OpMove:
 			dot (cr, cmd->pt[0].x, cmd->pt[0].y, 1, 1, 0, alpha);
@@ -282,8 +267,8 @@ static void draw_char (char_t *c)
 			dot (cr, cmd->pt[0].x, cmd->pt[0].y, 0, 0, 1, alpha);
 			dot (cr, cmd->pt[1].x, cmd->pt[1].y, 0, 0, 1, alpha);
 			dot (cr, cmd->pt[2].x, cmd->pt[2].y, 0, 1, 0, alpha);
-			tx = cmd->pt[2].x;
-			ty = cmd->pt[2].y;
+			break;
+		default:
 			break;
 		}
 	}
@@ -305,6 +290,8 @@ static void draw_char (char_t *c)
 				spot (cr, cmd->pt[0].x, cmd->pt[0].y, 0, 0, 1, alpha);
 				spot (cr, cmd->pt[1].x, cmd->pt[1].y, 0, 0, 1, alpha);
 				spot (cr, cmd->pt[2].x, cmd->pt[2].y, 0, 1, 0, alpha);
+				break;
+			default:
 				break;
 			}
 		}
@@ -614,6 +601,8 @@ static void write_char (char_t *c)
 					cmd->pt[1].x, cmd->pt[1].y,
 					cmd->pt[2].x, cmd->pt[2].y);
 			offset += 7;
+			break;
+		default:
 			break;
 		}
 	}
