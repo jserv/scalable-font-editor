@@ -152,7 +152,7 @@ double distance_to_segment (pt_t * p, pt_t * p1, pt_t * p2)
 	return distance_to_point (p, &px);
 }
 
-double distance_to_segments (pt_t * p, pts_t *s)
+static double distance_to_segments (pt_t * p, pts_t *s)
 {
 	double  m = distance_to_segment (p, &s->pt[0], &s->pt[1]);
 	int i;
@@ -172,7 +172,7 @@ pt_t lerp (pt_t *a, pt_t *b)
 	return p;
 }
 
-void dcj (spline_t *s, spline_t *s1, spline_t *s2)
+static void dcj (spline_t *s, spline_t *s1, spline_t *s2)
 {
 	pt_t ab = lerp (&s->a, &s->b);
 	pt_t bc = lerp (&s->b, &s->c);
@@ -192,8 +192,7 @@ void dcj (spline_t *s, spline_t *s1, spline_t *s2)
 	s2->d = s->d;
 }
 
-
-double spline_error (spline_t *s)
+static double spline_error (spline_t *s)
 {
 	double	berr, cerr;
 
@@ -202,7 +201,7 @@ double spline_error (spline_t *s)
 	return max (berr, cerr);
 }
 
-void decomp (pts_t *pts, spline_t *s, double tolerance)
+static void decomp (pts_t *pts, spline_t *s, double tolerance)
 {
 	if (spline_error (s) <= tolerance)
 		add_pt (pts, &s->a);
@@ -214,7 +213,7 @@ void decomp (pts_t *pts, spline_t *s, double tolerance)
 	}
 }
 
-pts_t *decompose(spline_t *s, double tolerance)
+static pts_t *decompose(spline_t *s, double tolerance)
 {
 	pts_t   *result = new_pts ();
 
@@ -223,7 +222,7 @@ pts_t *decompose(spline_t *s, double tolerance)
 	return result;
 }
 
-double spline_fit_error (pt_t *p, int n, spline_t *s, double tolerance)
+static double spline_fit_error (pt_t *p, int n, spline_t *s, double tolerance)
 {
 	pts_t *sp = decompose (s, tolerance);
 	double err = 0;
@@ -235,27 +234,6 @@ double spline_fit_error (pt_t *p, int n, spline_t *s, double tolerance)
 	}
 	dispose_pts (sp);
 	return err;
-}
-
-pt_t lerp_a (pt_t *p1, pt_t *p2, double r)
-{
-	double dx = p2->x - p1->x;
-	double dy = p2->y - p1->y;
-	pt_t pt;
-
-	pt.x = p1->x + r * dx;
-	pt.y = p1->y + r * dy;
-	return pt;
-}
-
-double lerp_dist (pt_t *p1, pt_t *p2, double r)
-{
-	double dx = p2->x - p1->x;
-	double dy = p2->y - p1->y;
-
-	dx *= r;
-	dy *= r;
-	return sqrt (dx * dx + dy * dy);
 }
 
 spline_t fit (pt_t *p, int n)
