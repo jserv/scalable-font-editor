@@ -1,7 +1,7 @@
 TARGET = font-editor
 
-CFLAGS=$(shell pkg-config --cflags cairo x11) -g -Wall
-LIBS=$(shell pkg-config --libs cairo x11) #-lm
+CFLAGS = $(shell pkg-config --cflags cairo x11) -g -Wall
+LIBS = $(shell pkg-config --libs cairo x11)
 
 OBJS = \
 	font-editor.o \
