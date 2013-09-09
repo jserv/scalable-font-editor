@@ -37,13 +37,6 @@ double abs (double a)
 	return a < 0 ? -a : a;
 }
 
-double floor(double x)
-{
-	if (x>0)
-		return (int) x;
-	return (int) (x-0.9999999999999999);
-}
-
 double sqrt(double x)
 {
 	double i = x/2;
@@ -289,8 +282,6 @@ spline_t fit (pt_t *p, int n)
 	spline_t	s;
 	spline_t	best_s;
 
-	double	dist;
-
 	double	tol = 0.5;
 	double	best_err = 10000;
 	double	sbx_min;
@@ -304,8 +295,6 @@ spline_t fit (pt_t *p, int n)
 
 	s.a = p[0];
 	s.d = p[n - 1];
-
-	dist = floor (distance_to_point (&s.a, &s.d) + 0.5);
 
 	if (s.a.x < s.d.x)
 	{
