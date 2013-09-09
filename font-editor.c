@@ -543,7 +543,11 @@ static void play (char_t *c)
 				else
 					spline = 0;
 				if (spline) {
-					switch (XKeycodeToKeysym (dpy, ev.xkey.keycode, 0)) {
+					int keysyms_keycode;
+					KeySym *keysym = XGetKeyboardMapping(dpy,
+							ev.xkey.keycode, 1,
+							&keysyms_keycode);
+					switch (keysyms_keycode) {
 					case XK_Left:
 						tweak_spline (c, spline,
 								ev.xkey.state & ShiftMask,
@@ -569,6 +573,7 @@ static void play (char_t *c)
 						draw_char (c);
 						break;
 					}
+					XFree(keysym);
 				}
 			}
 			break;
