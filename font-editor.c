@@ -383,8 +383,10 @@ static cmd_t *pos_to_cmd (char_t *c, cmd_t *start, int ix, int iy)
 
 static int is_before (cmd_t *before, cmd_t *after)
 {
-	if (!before) return 0;
-	if (before->next == after) return 1;
+	if (!before)
+		return 0;
+	if (before->next == after)
+		return 1;
 	return is_before (before->next, after);
 }
 
@@ -612,8 +614,8 @@ static void write_char (char_t *c)
 
 int main (int argc, char **argv)
 {
-	char_t  *c;
-	int	    ucs4;
+	char_t *c;
+	int ucs4;
 
 	if (!init (argc, argv))
 		exit (1);
