@@ -19,8 +19,8 @@ Usage
 ```
 make
 ./font-editor < nchars
-(press 'q' to next character)
 ```
+(press 'q' to next character)
 
 Licensing
 =========
