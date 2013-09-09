@@ -39,10 +39,10 @@ double abs (double a)
 
 double sqrt(double x)
 {
-	double i = x/2;
+	double i = x / 2;
 	if (x < 0)
 		return 0;
-	while (fabs(i - (x / i)) / i >0.000000000000001)
+	while (fabs(i - (x / i)) / i > 0.000000000000001)
 		i = (i + (x / i)) / 2;
 	return i;
 }

@@ -350,9 +350,9 @@ static void draw_char (char_t *c)
 
 static cmd_t *pos_to_cmd (char_t *c, cmd_t *start, int ix, int iy)
 {
-	double  x = ix, y = iy;
-	double  best_err = 1;
-	cmd_t   *cmd, *best_cmd = 0;
+	double x = ix, y = iy;
+	double best_err = 1;
+	cmd_t *cmd, *best_cmd = 0;
 
 	cairo_device_to_user (cr, &x, &y);
 	if (start)
@@ -535,7 +535,7 @@ static void play (char_t *c)
 				}
 			}
 			else {
-				cmd_t	*spline;
+				cmd_t *spline;
 				if (c->first && c->first->op == OpCurve)
 					spline = c->first;
 				else if (c->last && c->last->op == OpCurve)
@@ -635,5 +635,5 @@ int main (int argc, char **argv)
 	}
 	printf ("\n");
 
-	exit (0);
+	return 0;
 }
